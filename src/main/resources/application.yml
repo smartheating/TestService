@@ -1,14 +1,30 @@
 spring:
   application:
     name: testservice
+  profiles:
+    active: "dev"
 
 server:
   port: ${PORT:9010}
 
+---
+spring:
+  profiles: dev
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:9000/eureka/
+    enabled: true
+  instance:
+    preferIpAddress: true
+    
+---
+spring:
+  profiles: docker
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://serviceregistration:9000/eureka/
     enabled: true
   instance:
     preferIpAddress: true
