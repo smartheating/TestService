@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.smartheating.SmartHeatingCommons.TestModel;
 import de.smartheating.testservice.rabbitmq.MessageProducer;
 import io.swagger.annotations.ApiOperation;
 
@@ -24,10 +23,8 @@ public class TestServiceRestController {
 	@GetMapping(value = "/test", produces = "application/json")
 	@ApiOperation(value = "Get all Git-Configurations")
 	public ResponseEntity<?> getAllConfigs() {
-		TestModel test = new TestModel();
-		test.setTest("Test!");
 		rabbitMQProducer.sendMessages("Test RabbitMQ");
-		return new ResponseEntity<>(test, HttpStatus.OK);
+		return new ResponseEntity<>("Test", HttpStatus.OK);
 	}
 
 }
