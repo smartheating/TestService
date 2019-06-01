@@ -1,6 +1,10 @@
-FROM java:8-jdk-alpine
-VOLUME /tmp
-EXPOSE 9010
-ARG JAR_FILE=target/TestService-0.0.1-SNAPSHOT.jar
-ADD ${JAR_FILE} testservice.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=docker","-jar","/testservice.jar"]
+FROM maven:3-jdk-8
+
+RUN git clone https://github.com/smartheating/CommonsModule.git
+WORKDIR /CommonsModule
+RUN mvn clean install -DskipTests
+
+RUN git clone https://github.com/smartheating/TestService.git /TestService
+WORKDIR /TestService
+RUN mvn clean install -DskipTests
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=docker","-jar","target/TestService-0.0.1-SNAPSHOT.jar"]
